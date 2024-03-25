@@ -14,7 +14,7 @@ enum Level {
 }
 
 public class Application implements Runnable {
-        SoundManager soundManager;
+        SoundSystem soundManager;
         JPanel mainPanel;
         GamePanel gamePanel;
         Timer timer;
@@ -27,7 +27,6 @@ public class Application implements Runnable {
         String name;
 
         public Application() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-                //musicPlayer = new MusicPlayer();
                 frame = new JFrame();
                 frame.setSize(450, 800);
                 frame.setVisible(true);
@@ -140,7 +139,7 @@ public class Application implements Runnable {
                         public void actionPerformed(ActionEvent e) {
                                 isSong = !isSong;
                                 if (isSong) {
-                                        soundManager = new SoundManager();
+                                        soundManager = new SoundSystem();
                                 } else {
                                         soundManager.stop();
                                 }

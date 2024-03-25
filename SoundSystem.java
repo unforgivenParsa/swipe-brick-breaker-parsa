@@ -4,12 +4,12 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
-public class SoundManager {
+public class SoundSystem {
     private Clip clip;
     boolean pause = false;
-    public SoundManager() {
+    public SoundSystem() {
         try {
-            File audioFile = new File("Audio.wav");
+            File audioFile = new File("Wolf Hoffmann - Adagio in G Minor.wav");
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
