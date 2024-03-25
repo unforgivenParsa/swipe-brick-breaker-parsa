@@ -6,16 +6,16 @@ import java.io.IOException;
 
 public class SoundSystem {
     private Clip clip;
-    boolean pause = false;
+    boolean selectStop = false;
     public SoundSystem() {
         try {
-            File audioFile = new File("Wolf Hoffmann - Adagio in G Minor.wav");
+            File audioFile = new File("Matthew McConaughey.wav");
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             clip.addLineListener(event -> {
-                if (event.getType() == LineEvent.Type.CLOSE && !pause) {
+                if (event.getType() == LineEvent.Type.CLOSE && !selectStop) {
                     clip.setFramePosition(0);
                     clip.start();
                 }
@@ -28,13 +28,13 @@ public class SoundSystem {
     public void play() {
         if (clip != null && !clip.isRunning()) {
             clip.start();
-            pause = false;
+            selectStop = false;
         }
     }
 
     public void stop() {
         if (clip != null && clip.isRunning()) {
-            pause = true;
+            selectStop = true;
             clip.stop();
         }
     }

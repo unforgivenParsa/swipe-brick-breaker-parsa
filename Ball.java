@@ -1,7 +1,10 @@
 package brickBreaker;
 
+import java.awt.*;
+
 public class Ball {
     int currentX, currentY, lastX, lastY, Vx, Vy;
+    Color color;
     boolean isMovable;
     public Ball (int currentX, int currentY) {
         isMovable = true;
@@ -64,5 +67,12 @@ public class Ball {
     public void setMovable(boolean movable) {
         isMovable = movable;
     }
-}
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+}
