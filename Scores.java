@@ -2,6 +2,8 @@ package brickBreaker;
 
 import java.awt.*;
 
+import java.awt.*;
+
 public class Scores {
     int x, y, currentScore, originalScore;
     Color color;

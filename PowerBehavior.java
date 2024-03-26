@@ -2,7 +2,7 @@ package brickBreaker;
 
 import java.awt.*;
 
-public class PowerBehavior extends Item{
+public class PowerBehavior extends Innermost {
 
     public PowerBehavior(GamePanel gamePanel, int currentX, int currentY) {
         super(gamePanel, currentX, currentY);
@@ -19,4 +19,5 @@ public class PowerBehavior extends Item{
         gamePanel.timePower = 15000;
     }
 }
+
 

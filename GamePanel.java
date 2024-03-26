@@ -13,8 +13,8 @@ public class GamePanel extends JPanel {
     Color color;
     Boolean dizzy = false, addDizzy = false, randomColor = false, inRandomColor = false;
     ArrayList<Ball> balls;
-    ArrayList<Rect> rects;
-    ArrayList<Item> items;
+    ArrayList<Scores> rects;
+    ArrayList<Innermost> items;
 
     public GamePanel(Application application, int defaultSpawnY, Color color, int possibility) {
         setBackground(Color.WHITE);
@@ -59,7 +59,7 @@ public class GamePanel extends JPanel {
             g2d.setColor(ball.getColor());
             g2d.fill(ballShape);
         }
-        for (Item item : items) {
+        for (Innermost item : items) {
             Ellipse2D ballShape = new Ellipse2D.Double(item.currentX - 10, item.currentY - 10, 20, 20);
             if (!inRandomColor) {
                 item.setColor(item.getDefaultColor());
@@ -69,7 +69,7 @@ public class GamePanel extends JPanel {
             g2d.setColor(item.getColor());
             g2d.fill(ballShape);
         }
-        for (Rect rect : rects) {
+        for (Scores rect : rects) {
             if (!inRandomColor) {
                 rect.setColor(Color.BLACK);
             } else if (randomColor) {
@@ -119,7 +119,7 @@ public class GamePanel extends JPanel {
                 g2d.drawLine(currentSpawnX, currentSpawnY, x1, defaultSpawnY);
                 return;
             }
-            for (Rect rect : rects) {
+            for (Scores rect : rects) {
                 if (Vy > 0 && y1 + 10 >= (rect.y) && y1 + 10 < (rect.y + 50)) {
                     if (x1 >= rect.x && x1 <= rect.x + 50) {
                         g2d.drawLine(currentSpawnX, currentSpawnY, x1, rect.y - 10);
@@ -175,7 +175,7 @@ public class GamePanel extends JPanel {
     }
 
     public void nextFrame() throws Exception {
-        for (Rect rect : rects) {
+        for (Scores rect : rects) {
             rect.y++;
             if (rect.y >= defaultSpawnY - 50) {
                 application.endGame((int) score);
@@ -183,7 +183,7 @@ public class GamePanel extends JPanel {
             }
         }
         for (int i = 0; i < items.size(); i++) {
-            Item item = items.get(i);
+            Innermost item = items.get(i);
             item.currentY++;
             if (item.currentY >= defaultSpawnY - 10) {
                 items.remove(i);
@@ -201,27 +201,27 @@ public class GamePanel extends JPanel {
             int random = (int) (Math.random() * 100);
             if (random < possibilty) {
                 if (application.difficulty.equals(Level.easy)) {
-                    rects.add(new Rect(i * 50, -50, height / 50 + 1));
-                } else if (application.difficulty.equals(Level.medium)) {
-                    rects.add(new Rect(i * 50, -50, height / 50 * 2 + 1));
+                    rects.add(new Scores(i * 50, -50, height / 50 + 1));
+                } else if (application.difficulty.equals(Level.semiPro)) {
+                    rects.add(new Scores(i * 50, -50, height / 50 * 2 + 1));
                 } else {
-                    rects.add(new Rect(i * 50, -50, height / 50 * 3 + 1));
+                    rects.add(new Scores(i * 50, -50, height / 50 * 3 + 1));
                 }
             }
             if (random >= 90) {
                 random = (int) (Math.random() * 12);
                 if (random < 4) {
-                    items.add(new ItemBall(this, i * 50 + 25, -25));
+                    items.add(new BallBehavior(this, i * 50 + 25, -25));
                 } else if (random < 6) {
-                    items.add(new ItemVelocity(this, i * 50 + 25, -25));
+                    items.add(new Speed(this, i * 50 + 25, -25));
                 } else if (random < 8) {
                     items.add(new PowerBehavior(this, i * 50 + 25, -25));
                 } else if (random < 10) {
                     items.add(new Confusion(this, i * 50 + 25, -25));
                 } else if (random == 10) {
-                    items.add(new ItemColor(this, i * 50 + 25, -25));
+                    items.add(new Colorful(this, i * 50 + 25, -25));
                 } else {
-                    items.add(new ItemEarth(this, i * 50 + 25, -25));
+                    items.add(new Earthquake(this, i * 50 + 25, -25));
                 }
             }
 
@@ -258,7 +258,7 @@ public class GamePanel extends JPanel {
                     ball.currentX = currentSpawnX;
                 }
                 if (ball.currentY <= 10) {
-                    // important
+
                     ball.lastY = 10;
                     //
                     ball.currentY = 20 - ball.currentY;
@@ -268,7 +268,7 @@ public class GamePanel extends JPanel {
                     break;
                 }
                 for (int j = 0; j < rects.size(); j++) {
-                    Rect rect = rects.get(j);
+                    Scores rect = rects.get(j);
                     boolean collision = false;
                     if (ball.Vy > 0 && ball.lastY + 10 < (rect.y) && ball.currentY + 10 >= (rect.y)) {
                         // important
@@ -291,7 +291,6 @@ public class GamePanel extends JPanel {
                         }
                     }
                     if (!collision && ball.Vx > 0 && ball.lastX + 10 < (rect.x) && ball.currentX + 10 >= (rect.x)) {
-                        // important
                         double tempY = (double) (ball.Vy / ball.Vx) * (rect.x - (ball.lastX + 10)) + ball.lastY;
                         if (tempY >= rect.y && tempY <= rect.y + 50) {
                             ball.Vx = (-1) * ball.Vx;
@@ -301,7 +300,6 @@ public class GamePanel extends JPanel {
                         }
                     }
                     if (!collision && ball.Vx < 0 && ball.lastX - 10 > (rect.x + 50) && ball.currentX - 10 <= (rect.x + 50)) {
-                        // important
                         double tempY = (double) (ball.Vy / ball.Vx) * ((rect.x + 50) - (ball.lastX - 10)) + ball.lastY;
                         if (tempY >= rect.y && tempY <= rect.y + 50) {
                             ball.Vx = (-1) * ball.Vx;
@@ -344,7 +342,7 @@ public class GamePanel extends JPanel {
                         ball.currentX = ball.currentX + (int) (ball.Vx * (10 - distance(rect.x + 50, rect.y + 50, ball.currentX, ball.currentY)) / 10);
                         ball.currentY = ball.currentY + (int) (ball.Vy * (10 - distance(rect.x + 50, rect.y + 50, ball.currentX, ball.currentY)) / 10);
                         rect.currentScore -= power;
-                    }  
+                    }
                     if (ball.Vy == 0) {
                         ball.Vy = 1;
                     }
@@ -355,7 +353,7 @@ public class GamePanel extends JPanel {
                     }
                 }
                 for (int j = 0; j < items.size(); j++) {
-                    Item item = items.get(j);
+                    Innermost item = items.get(j);
                     if (distance(item.currentX, item.currentY, ball.currentX, ball.currentY) < 20) {
                         item.toDo();
                         items.remove(j);

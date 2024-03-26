@@ -2,7 +2,7 @@ package brickBreaker;
 
 import java.awt.*;
 
-public class Confusion extends Item{
+public class Confusion extends Innermost {
 
     public Confusion(GamePanel gamePanel, int currentX, int currentY) {
         super(gamePanel, currentX, currentY);
@@ -16,4 +16,3 @@ public class Confusion extends Item{
         gamePanel.addDizzy = true;
     }
 }
-
